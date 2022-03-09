@@ -1,0 +1,38 @@
+<html>
+	<head>
+	<title>Flipper Zero Shipping Status</title>
+	<style>
+		body {
+			background: black;
+			color: white;
+			display: flex;
+		}
+		.container {
+			margin: auto;
+			text-align: center;
+		}
+		.flipper {
+			color: #e88004;
+		}
+		.info {
+			color: gray;
+		}
+		a {
+    		color: gray;
+		}
+		a:hover {
+    		color: #e88004;
+    		text-decoration: none;
+    		cursor: pointer;
+		}
+	</style>
+	</head>
+	<body>
+		<div class="container">
+			<h4 class="info">As of {{ .status.Date.Format "January 02 15:04 MST" }}</h4>
+			<h1>We shipped <span class="flipper">{{ .status.Total }}</span> Flippers</h1>
+			<h2><span class="flipper">{{ .status.Delivered }}</span> of them have already been delivered</h2>
+			<h4 class="info"><a href="https://flipp.dev">Learn more about Flipper Zero</a></h4>
+		</div>
+	</body>
+</html>
