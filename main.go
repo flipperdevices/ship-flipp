@@ -50,7 +50,7 @@ func pollStatus() {
 		if err != nil {
 			log.Println("Status", err)
 		} else {
-			log.Println("Status", "Total:", status.Total, "Delivered", status.Delivered)
+			log.Println("Status", "Total:", status.Total, "Delivered:", status.Delivered)
 			latestStatus = status
 		}
 		time.Sleep(time.Minute * 10)
