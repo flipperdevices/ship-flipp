@@ -2,8 +2,8 @@
 	<head>
 	<title>Flipper Zero Shipping Status</title>
 	<style>
-        	@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-        	body {
+		@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+		body {
 			background: black;
 			color: white;
 			display: flex;
@@ -27,6 +27,32 @@
 			text-decoration: none;
 			cursor: pointer;
 		}
+		.feed-delimeter {
+			border-top: 1px solid #7d7d7d70;
+			padding-bottom: 1.33em;
+		}
+		.feet {
+			margin: auto;
+			text-align: left;
+			padding: 0vw 1vw;
+			width: 400px;
+			height: 180px;
+			overflow-y: scroll;
+		}
+		.feed-post {
+			padding-bottom: 1vw;
+		}
+		.post-date {
+			text-align: right;
+			color: gray;
+		}
+		.post-delimeter {
+			margin: 0 45%;
+			border-top: 1px solid #7d7d7d70;
+		}
+		.feed-post:last-of-type .post-delimeter {
+			display: none;
+		}
 	</style>
 	</head>
 	<body>
@@ -35,6 +61,18 @@
 			<h1>We shipped <span class="flipper">{{ .status.Total }}</span> Flippers</h1>
 			<h2><span class="flipper">{{ .status.Delivered }}</span> of them have already been delivered</h2>
 			<h4 class="info"><a href="https://flipp.dev">Learn more about Flipper Zero</a></h4>
+			{{if .feed}}
+				<div class="feed-delimeter"></div>
+				<div class="feet">
+				{{range .feed}}
+					<div class="feed-post">
+						<div class="post-message">{{.Message | unescape}}</div>
+						<div class="post-date">{{.Date.Format "02 Jan 15:04"}}</div>
+						<div class="post-delimeter"></div>
+					</div>
+				{{end}}
+				</div>
+			{{end}}
 		</div>
 	</body>
 </html>

@@ -8,7 +8,7 @@ import (
 	"github.com/valyala/fastjson"
 )
 
-func getEasyShipStatus(webToken, companyID string) (*shippingStatus, error) {
+func getEasyShipStatus(webToken, companyID string) (*easyShipStatus, error) {
 	req := &fasthttp.Request{}
 	req.SetRequestURI("https://api.easyship.com/api/v2/companies/" + companyID + "/analytics?scopes=shipments_count_by_in_progress_status")
 	req.Header.Set("Authorization", "Bearer "+webToken)
@@ -22,9 +22,15 @@ func getEasyShipStatus(webToken, companyID string) (*shippingStatus, error) {
 	if delivered == 0 {
 		return nil, errors.New("unknown error: " + string(res.Body()))
 	}
-	return &shippingStatus{
+	return &easyShipStatus{
 		Total:     shipping + delivered,
 		Delivered: delivered,
 		Date:      time.Now().UTC(),
 	}, nil
+}
+
+type easyShipStatus struct {
+	Total     int
+	Delivered int
+	Date      time.Time
 }
