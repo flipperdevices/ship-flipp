@@ -10,77 +10,98 @@
 	<link href="https://necolas.github.io/normalize.css/latest/normalize.css" rel="stylesheet" />
 
 	<style>
-		@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+		@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 		body {
 			background: black;
 			color: white;
 			display: flex;
-			font-family: 'Roboto', Arial, sans-serif;
+			font-family: "Roboto", Arial, sans-serif;
+			height: 100%;
 		}
+
+		@media (min-width: 801px) {
+			body {
+				height: auto;
+			}
+		}
+
 		.container {
 			margin: auto;
 			text-align: center;
 		}
+
 		.flipper {
 			color: #e88004;
 		}
+
 		.info {
 			color: gray;
 		}
+
 		a {
 			color: gray;
 		}
+
 		a:hover {
 			color: #e88004;
-			text-decoration: none;
 			cursor: pointer;
+			text-decoration: none;
 		}
-		.feed-delimeter {
+
+		.feed-delimiter {
 			border-top: 1px solid #7d7d7d70;
 			padding-bottom: 1.33em;
 		}
-		.feet {
-			margin: auto;
-			text-align: left;
-			padding: 0vw 1vw;
-			width: 400px;
+
+		.feed {
 			height: 180px;
+			margin: auto;
 			overflow-y: scroll;
+			padding: 0vw 1vw;
+			text-align: left;
+			width: 400px;
 		}
+
 		.feed-post {
 			padding-bottom: 1vw;
 		}
+
 		.post-date {
-			text-align: right;
 			color: gray;
+			text-align: right;
 		}
+
 		.post-delimeter {
-			margin: 0 45%;
 			border-top: 1px solid #7d7d7d70;
+			margin: 0 45%;
 		}
+
 		.feed-post:last-of-type .post-delimeter {
 			display: none;
 		}
 	</style>
-	</head>
-	<body>
-		<div class="container">
-			<h4 class="info">As of {{ .status.Date.Format "January 02 15:04 MST" }}</h4>
-			<h1>We shipped <span class="flipper">{{ .status.Total }}</span> Flippers</h1>
-			<h2><span class="flipper">{{ .status.Delivered }}</span> of them have already been delivered</h2>
-			<h4 class="info"><a href="https://flipp.dev">Learn more about Flipper Zero</a></h4>
-			{{if .feed}}
-				<div class="feed-delimeter"></div>
-				<div class="feet">
-				{{range .feed}}
-					<div class="feed-post">
-						<div class="post-message">{{.Message | unescape}}</div>
-						<div class="post-date">{{.Date.Format "02 Jan 15:04"}}</div>
-						<div class="post-delimeter"></div>
-					</div>
-				{{end}}
-				</div>
+</head>
+
+<body>
+	<div class="container">
+		<h4 class="info">As of {{ .status.Date.Format "January 02 15:04 MST" }}</h4>
+		<h1>We shipped <span class="flipper">{{ .status.Total }}</span> Flippers</h1>
+		<h2><span class="flipper">{{ .status.Delivered }}</span> of them have already been delivered</h2>
+		<h4 class="info"><a href="https://flipp.dev">Learn more about Flipper Zero</a></h4>
+		{{if .feed}}
+		<div class="feed-delimiter"></div>
+		<div class="feed">
+			{{range .feed}}
+			<div class="feed-post">
+				<div class="post-message">{{.Message | unescape}}</div>
+				<div class="post-date">{{.Date.Format "02 Jan 15:04"}}</div>
+				<div class="post-delimeter"></div>
+			</div>
 			{{end}}
 		</div>
-	</body>
+		{{end}}
+	</div>
+</body>
+
 </html>
