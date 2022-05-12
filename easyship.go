@@ -10,7 +10,7 @@ import (
 
 func getEasyShipStatus(webToken, companyID string) (*easyShipStatus, error) {
 	req := &fasthttp.Request{}
-	req.SetRequestURI("https://api.easyship.com/api/v2/companies/" + companyID + "/analytics?scopes=shipments_count_by_in_progress_status")
+	req.SetRequestURI("https://api.easyship.com/api/v2/companies/" + companyID + "/analytics?from_date=%222020-12-31T21%3A00%3A00.000Z%22&scopes=shipments_count_by_in_progress_status&to_date=%222025-05-11T21%3A00%3A00.000Z%22")
 	req.Header.Set("Authorization", "Bearer "+webToken)
 	res := &fasthttp.Response{}
 	err := fasthttp.Do(req, res)
