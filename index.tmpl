@@ -1,5 +1,6 @@
 <html>
 	<head>
+    	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, minimum-scale=1.0">
 	<title>Flipper Zero Shipping Status</title>
 	<style>
 		@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
@@ -35,10 +36,15 @@
 			margin: auto;
 			text-align: left;
 			padding: 0vw 1vw;
-			width: 400px;
+			max-width: 400px;
   			height: 60vh;
 			overflow-y: scroll;
 			scrollbar-width: thin;
+		}
+		@media screen, (max-height: 700px) {
+			.feet {
+				height: auto;
+			}
 		}
 		.feed-post {
 			padding-bottom: 1vw;
