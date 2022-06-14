@@ -9,6 +9,7 @@ import (
 
 	"github.com/caarlos0/env/v6"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/feeds"
 )
 
 //go:embed index.tmpl
@@ -51,6 +52,26 @@ func main() {
 			"status": latestStatus,
 			"feed":   latestPosts,
 		})
+	})
+
+	r.GET("/rss", func(c *gin.Context) {
+		feed := &feeds.Feed{
+			Title: "Flipper Zero Shipping Status",
+			Link:  &feeds.Link{Href: "https://ship.flipp.dev"},
+		}
+		for _, p := range latestPosts {
+			feed.Items = append(feed.Items, &feeds.Item{
+				Content: p.Message,
+				Created: p.Date.Time,
+				Link:    &feeds.Link{Href: "https://ship.flipp.dev"},
+			})
+		}
+		rss, err := feed.ToRss()
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+			return
+		}
+		c.Data(200, "application/rss+xml", []byte(rss))
 	})
 
 	log.Println("Starting server...")
