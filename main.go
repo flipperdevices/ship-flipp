@@ -17,6 +17,8 @@ var f embed.FS
 var cfg config
 var latestStatus *easyShipStatus
 var latestPosts []tgMessage
+var latestTotalOffset int
+var latestDeliveredOffset int
 
 func main() {
 	if err := env.Parse(&cfg); err != nil {
@@ -30,11 +32,14 @@ func main() {
 	}
 
 	if cfg.TelegramChannel != "" {
-		latestPosts, err = getFeedPosts(cfg.TelegramChannel)
+		latestPosts, latestTotalOffset, latestDeliveredOffset, err = getFeedPosts(cfg.TelegramChannel)
 		if err != nil {
 			log.Fatalln("Telegram", err)
 		}
 	}
+
+	latestStatus.Total += latestTotalOffset
+	latestStatus.Delivered += latestDeliveredOffset
 
 	go pollData()
 
@@ -80,21 +85,25 @@ func main() {
 
 func pollData() {
 	for {
-		status, err := getEasyShipStatus(cfg.EasyShipWebToken, cfg.EasyShipCompanyID)
-		if err != nil {
-			log.Println("Status", err)
-		} else {
-			log.Println("Status", "Total:", status.Total, "Delivered:", status.Delivered)
-			latestStatus = status
-		}
-
 		if cfg.TelegramChannel != "" {
-			posts, err := getFeedPosts(cfg.TelegramChannel)
+			posts, totalOffset, deliveredOffset, err := getFeedPosts(cfg.TelegramChannel)
 			if err != nil {
 				log.Println("Telegram", err)
 			} else {
 				latestPosts = posts
+				latestTotalOffset = totalOffset
+				latestDeliveredOffset = deliveredOffset
 			}
+		}
+
+		status, err := getEasyShipStatus(cfg.EasyShipWebToken, cfg.EasyShipCompanyID)
+		if err != nil {
+			log.Println("Status", err)
+		} else {
+			status.Total += latestTotalOffset
+			status.Delivered += latestDeliveredOffset
+			log.Println("Status", "Total:", status.Total, "Delivered:", status.Delivered)
+			latestStatus = status
 		}
 
 		time.Sleep(time.Minute * 10)
